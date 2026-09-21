@@ -4,7 +4,8 @@
      Toda la página usa exclusivamente estos nombres de color CSS.
      ============================================================ */
   :root {
-    --color-fondo-superior: rgb(0, 0, 0);
+    --lila-principal: mediumpurple;
+    --color-fondo-superior: lavender;
     --color-fondo-inferior: thistle;
     --color-sobre-cuerpo: plum;
     --color-sobre-solapa: mediumorchid;
@@ -70,7 +71,7 @@
 
   body {
     min-height: 100%;
-    background: linear-gradient(160deg, var(--lila-principal), var(--color-fondo-inferior));
+    background: linear-gradient(160deg, mediumpurple, darkorchid);
     font-family: 'Quicksand', 'Segoe UI', sans-serif;
     color: var(--color-texto-principal);
     display: flex;
