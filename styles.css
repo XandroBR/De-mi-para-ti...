@@ -1,0 +1,611 @@
+
+  /* ============================================================
+     PALETA DE COLORES — declarada por nombre, no por código hex.
+     Toda la página usa exclusivamente estos nombres de color CSS.
+     ============================================================ */
+  :root {
+    --color-fondo-superior: lavender;
+    --color-fondo-inferior: thistle;
+    --color-sobre-cuerpo: plum;
+    --color-sobre-solapa: mediumorchid;
+    --color-sobre-bolsillo: darkorchid;
+    --color-sobre-sombra: rebeccapurple;
+    --color-sello: gold;
+    --color-sello-borde: goldenrod;
+    --color-papel: lavenderblush;
+    --color-papel-borde: thistle;
+    --color-texto-principal: indigo;
+    --color-texto-suave: darkslateblue;
+    --color-texto-claro: white;
+    --color-acento: orchid;
+    --color-boton: mediumpurple;
+    --color-boton-hover: darkorchid;
+    --color-boton-texto: white;
+    --color-panel-fondo: white;
+    --color-panel-borde: thistle;
+    --color-error: crimson;
+    --color-overlay: rgba(75, 0, 130, 0.55);
+    --color-enlace: indigo;
+
+    color-scheme: light;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --lila-principal: rgb(166, 110, 223);
+      --color-fondo-inferior: rgb(170, 81, 234);
+      --color-sobre-cuerpo: darkorchid;
+      --color-sobre-solapa: mediumorchid;
+      --color-sobre-bolsillo: rgb(161, 6, 161);
+      --color-sobre-sombra: black;
+      --color-papel: lavenderblush;
+      --color-papel-borde: plum;
+      --color-texto-principal: rgb(251, 251, 251);
+      --color-texto-suave: rgb(214, 195, 232);
+      --color-panel-fondo: white;
+      --color-panel-borde: plum;
+      --color-overlay: rgba(20, 0, 40, 0.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --lila-principal: rgb(166, 110, 223);
+    --color-fondo-inferior: indigo;
+    --color-sobre-cuerpo: darkorchid;
+    --color-sobre-solapa: mediumorchid;
+    --color-sobre-bolsillo: purple;
+    --color-sobre-sombra: black;
+    --color-panel-fondo: white;
+    --color-panel-borde: plum;
+    --color-overlay: rgba(20, 0, 40, 0.7);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    min-height: 100%;
+    background: linear-gradient(160deg, var(--lila-principal), var(--color-fondo-inferior));
+    font-family: 'Quicksand', 'Segoe UI', sans-serif;
+    color: var(--color-texto-principal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px calc(32px + env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden;
+  }
+
+  h1, h2, .letra-firma { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+  /* ---------- Encabezado ---------- */
+  .encabezado {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .encabezado h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--color-texto-principal);
+  }
+  .encabezado p {
+    margin: 0;
+    color: var(--color-texto-suave);
+    font-size: 0.95rem;
+  }
+
+  /* ---------- Escena del sobre ---------- */
+  .escena {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+  }
+
+
+  .sobre {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+  }
+  .sobre:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 6px;
+    border-radius: 10px;
+  }
+
+  /* La carta invisible por defecto, solo aparece al abrir */
+  .carta {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% - 28px);
+    transform: translateX(-50%) translateY(100%);
+    width: 76%;
+    max-width: 340px;
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    box-shadow: none;
+    transition: transform 1s cubic-bezier(.35,.05,.2,1),
+                opacity 0.3s ease;
+    z-index: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+    overflow: visible;
+    pointer-events: none;
+    opacity: 0;        /* invisible hasta que se abra */
+    visibility: hidden;
+  }
+  .carta img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 3px;
+    box-shadow: 0 8px 20px var(--color-sobre-sombra);
+    background: transparent;
+  }
+
+  /* El sobre-wrap necesita ser el contexto de posicionamiento */
+  .sobre-wrap {
+    position: relative;
+  }
+
+  /* El sobre-marco NO necesita overflow hidden ahora */
+  .sobre-marco {
+    width: min(92vw, 460px);
+    aspect-ratio: 3 / 2;
+    perspective: 1400px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sobre-cuerpo {
+    position: absolute;
+    inset: 0;
+    background: var(--color-sobre-cuerpo);
+    border-radius: 8px;
+    box-shadow: 0 18px 34px var(--color-sobre-sombra);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  /* bolsillo frontal */
+  .sobre-bolsillo {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 100%, 50% 42%, 100% 100%);
+    background: var(--color-sobre-bolsillo);
+    opacity: 0.55;
+  }
+
+  .sobre-solapa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 54%;
+    background: var(--color-sobre-solapa);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transition: transform 0.85s cubic-bezier(.4,.1,.2,1);
+    z-index: 4;
+    box-shadow: 0 3px 8px var(--color-sobre-sombra);
+  }
+
+  .sello {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    width: clamp(42px, 13%, 64px);
+    height: clamp(42px, 13%, 64px);
+    background: var(--color-sello);
+    border: 2px solid var(--color-sello-borde);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.1rem, 4vw, 1.7rem);
+    z-index: 5;
+    box-shadow: 0 3px 6px var(--color-sobre-sombra);
+    transition: opacity 0.3s ease;
+  }
+
+  .sobre {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+  }
+  .sobre:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 6px;
+    border-radius: 10px;
+  }
+
+  /* — Estado ABIERTO — */
+  .sobre.abierto .sobre-solapa {
+    transform: rotateX(180deg);
+    z-index: 0;
+  }
+  .sobre.abierto .sello {
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* La carta sube por encima del sobre-marco */
+  .sobre-wrap.mostrando-acciones .carta {
+    transform: translateX(-50%) translateY(-20%);
+    z-index: 10;
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sobre-solapa, .carta { transition: none; }
+  }
+
+  .instruccion {
+    color: var(--color-texto-suave);
+    font-size: 0.95rem;
+    text-align: center;
+    min-height: 1.2em;
+  }
+
+  .acciones-carta {
+    display: none;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .sobre-wrap.mostrando-acciones .acciones-carta { display: flex; }
+
+  /* ---------- Botones ---------- */
+  button {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    background: var(--color-boton);
+    color: var(--color-boton-texto);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  button:hover { background: var(--color-boton-hover); }
+  button:active { transform: scale(0.97); }
+  button.secundario {
+    background: transparent;
+    color: var(--color-texto-principal);
+    border: 1.5px solid var(--color-boton);
+  }
+  button.secundario:hover {
+    background: var(--color-papel);
+  }
+  button:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Engranaje de configuración ---------- */
+  .btn-config {
+    position: fixed;
+    top: calc(16px + env(safe-area-inset-top, 0px));
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--color-panel-fondo);
+    color: var(--color-texto-principal);
+    font-size: 1.1rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px var(--color-sobre-sombra);
+  }
+  .btn-config:hover { background: var(--color-papel); }
+
+  /* ---------- Overlays / modales ---------- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--color-overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 50;
+  }
+  .overlay.visible { display: flex; }
+
+  .panel {
+    background: var(--color-panel-fondo);
+    border: 1px solid var(--color-panel-borde);
+    border-radius: 14px;
+    padding: 26px;
+    width: 100%;
+    max-width: 380px;
+    max-height: 86vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px var(--color-sobre-sombra);
+  }
+  .panel h2 {
+    margin: 0 0 14px;
+    font-size: 1.4rem;
+    color: var(--color-texto-principal);
+  }
+  .panel p.ayuda {
+    font-size: 0.82rem;
+    color: var(--color-texto-suave);
+    margin: 4px 0 16px;
+  }
+
+  .campo { margin-bottom: 14px; }
+  .campo label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-texto-principal);
+  }
+  .campo input[type="password"],
+  .campo input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--color-papel-borde);
+    background: var(--color-papel);
+    color: var(--color-texto-principal);
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+  .campo input:focus {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 1px;
+  }
+
+  .subir-foto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 2px dashed var(--color-boton);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--color-papel);
+    color: var(--color-texto-suave);
+    font-size: 0.85rem;
+  }
+  .subir-foto input[type="file"] { display: none; }
+
+  .miniaturas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .miniatura {
+    position: relative;
+    aspect-ratio: 1;
+  }
+  .miniatura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 7px;
+    border: 1px solid var(--color-panel-borde);
+    display: block;
+  }
+  .miniatura .numero {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background: var(--color-sobre-sombra);
+    color: var(--color-texto-claro);
+    font-size: 0.65rem;
+    line-height: 1;
+    padding: 3px 6px;
+    border-radius: 999px;
+  }
+  .miniatura .quitar {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-error);
+    color: var(--color-texto-claro);
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px var(--color-sobre-sombra);
+  }
+  .miniatura .quitar:hover { background: crimson; }
+
+  .mensaje-error {
+    color: var(--color-error);
+    font-size: 0.85rem;
+    margin: 4px 0 0;
+    min-height: 1.1em;
+  }
+
+  .fila-botones {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .fila-botones button { flex: 1; }
+
+  .shake { animation: shake 0.4s; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+  }
+
+  hr.separador {
+    border: none;
+    border-top: 1px solid var(--color-panel-borde);
+    margin: 18px 0;
+  }
+
+  .link-reinicio {
+    background: none;
+    border: none;
+    color: var(--color-enlace);
+    text-decoration: underline;
+    font-size: 0.8rem;
+    padding: 4px 0;
+    cursor: pointer;
+  }
+
+
+
+  /* ---------- Visor grande de la carta ---------- */
+  #fotoCarta { cursor: zoom-in; }
+
+  .overlay-lectura {
+    position: fixed;
+    inset: 0;
+    background: var(--color-overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: calc(8px + env(safe-area-inset-top, 0px)) 8px calc(46px + env(safe-area-inset-bottom, 0px));
+    z-index: 60;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .overlay-lectura.visible { display: flex; }
+  .overlay-lectura.visible.mostrado { opacity: 1; }
+
+  .lectura-marco {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .lectura-marco img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    background: transparent;
+    box-shadow: 0 25px 70px var(--color-sobre-sombra);
+    cursor: zoom-out;
+    will-change: transform;
+  }
+
+  .btn-cerrar-lectura {
+    position: fixed;
+    top: calc(16px + env(safe-area-inset-top, 0px));
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--color-panel-fondo);
+    color: var(--color-texto-principal);
+    font-size: 1.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px var(--color-sobre-sombra);
+    z-index: 61;
+  }
+  .btn-cerrar-lectura:hover { background: var(--color-papel); }
+
+  .btn-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--color-panel-fondo);
+    color: var(--color-texto-principal);
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px var(--color-sobre-sombra);
+    z-index: 61;
+  }
+  .btn-nav:hover { background: var(--color-papel); }
+  .btn-nav:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .btn-nav-anterior { left: 12px; }
+  .btn-nav-siguiente { right: 12px; }
+  .btn-nav.oculto { display: none; }
+
+  .badge-paginas {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--color-sobre-sombra);
+    color: var(--color-texto-claro);
+    font-size: 0.65rem;
+    padding: 3px 9px;
+    border-radius: 999px;
+    z-index: 3;
+    display: none;
+  }
+  .badge-paginas.visible { display: inline-block; }
+
+  .pista-lectura {
+    position: fixed;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-texto-claro);
+    font-size: 0.8rem;
+    background: var(--color-sobre-sombra);
+    padding: 6px 14px;
+    border-radius: 999px;
+    z-index: 61;
+    opacity: 0.9;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+  }
