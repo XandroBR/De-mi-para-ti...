@@ -4,7 +4,7 @@
      Toda la página usa exclusivamente estos nombres de color CSS.
      ============================================================ */
   :root {
-    --color-fondo-superior: lavender;
+    --color-fondo-superior: rgb(0, 0, 0);
     --color-fondo-inferior: thistle;
     --color-sobre-cuerpo: plum;
     --color-sobre-solapa: mediumorchid;
@@ -16,7 +16,7 @@
     --color-papel-borde: thistle;
     --color-texto-principal: indigo;
     --color-texto-suave: darkslateblue;
-    --color-texto-claro: white;
+    --color-texto-claro: rgb(249, 246, 246);
     --color-acento: orchid;
     --color-boton: mediumpurple;
     --color-boton-hover: darkorchid;
@@ -42,8 +42,8 @@
       --color-sobre-sombra: black;
       --color-papel: lavenderblush;
       --color-papel-borde: plum;
-      --color-texto-principal: rgb(251, 251, 251);
-      --color-texto-suave: rgb(214, 195, 232);
+      --color-texto-principal: rgb(4, 4, 4);
+      --color-texto-suave: rgb(126, 44, 203);
       --color-panel-fondo: white;
       --color-panel-borde: plum;
       --color-overlay: rgba(20, 0, 40, 0.7);
@@ -92,11 +92,11 @@
     font-size: clamp(1.6rem, 5vw, 2.4rem);
     font-weight: 600;
     margin: 0 0 6px;
-    color: var(--color-texto-principal);
+    color: rgb(250, 250, 250);
   }
   .encabezado p {
     margin: 0;
-    color: var(--color-texto-suave);
+    color: rgb(250, 250, 250);
     font-size: 0.95rem;
   }
 
@@ -259,7 +259,7 @@
   }
 
   .instruccion {
-    color: var(--color-texto-suave);
+    color: rgb(250, 250, 250);
     font-size: 0.95rem;
     text-align: center;
     min-height: 1.2em;

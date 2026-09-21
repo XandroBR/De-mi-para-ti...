@@ -3,11 +3,31 @@
 
   var STORAGE_KEY = "sobre-secreto-config-v1";
 
+  // ================================================================
+  //  CONFIGURACIÓN POR DEFECTO
+  //  Edita estos valores antes de abrir la página:
+  //
+  //  1. PASSWORD: escribe tu contraseña entre las comillas.
+  //  2. FOTOS: pon los nombres de tus imágenes (deben estar en la
+  //     misma carpeta que index.html). Puedes agregar o quitar líneas.
+  //  3. TITULO: el texto que aparece arriba del sobre.
+  // ================================================================
+  var CONFIG_DEFECTO = {
+    password: "280325",          // ← escribe tu contraseña
+    titulo:   "Un sobre para ti",             // ← título de la página
+    fotos: [
+      "Carta_Mejorar_2.png",                   // ← nombre de la imagen 1
+      "Carta_Mejorar_1.png"                    // ← nombre de la imagen 2
+      // puedes agregar más: "carta-pagina-3.jpg",
+    ]
+  };
+  // ================================================================
+
   // ---- Almacenamiento local (por navegador) ----
   function leerConfig() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
+      if (!raw) return CONFIG_DEFECTO;   // usa la config por defecto si no hay nada guardado
       var config = JSON.parse(raw);
       // Compatibilidad con versiones anteriores que guardaban una sola foto
       if (config && !config.fotos && config.foto) {
@@ -19,7 +39,7 @@
       return config;
     } catch (e) {
       console.error("No se pudo leer la configuración guardada:", e);
-      return null;
+      return CONFIG_DEFECTO;
     }
   }
 
