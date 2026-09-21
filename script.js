@@ -16,8 +16,8 @@
     password: "280325",          // ← escribe tu contraseña
     titulo:   "Un sobre para ti",             // ← título de la página
     fotos: [
-      "Carta_Mejorar_2.png",                   // ← nombre de la imagen 1
-      "Carta_Mejorar_1.png"                    // ← nombre de la imagen 2
+      "carta1.png",                   // ← nombre de la imagen 1
+      "carta2.png",                    // ← nombre de la imagen 2
       // puedes agregar más: "carta-pagina-3.jpg",
     ]
   };
