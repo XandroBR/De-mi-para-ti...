@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Un sobre para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Caveat:wght@500;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+</head>
+<body>
+
+<button class="btn-config" id="btnConfig" title="Configurar sobre" aria-label="Configurar sobre">⚙</button>
+
+<div class="encabezado">
+  <h1 id="tituloPrincipal">Un sobre para ti</h1>
+  <p id="subtitulo">Toca el sobre para intentar abrirlo</p>
+</div>
+
+<div class="escena">
+  <div class="sobre-wrap" id="sobreWrap">
+    <div class="sobre-marco">
+      <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir el sobre">
+        <div class="sobre-cuerpo">
+          <div class="sobre-bolsillo"></div>
+        </div>
+        <div class="sobre-solapa" id="solapa"></div>
+        <div class="sello" id="sello">💌</div>
+      </div>
+    </div>
+    <!-- Carta fuera del sobre-marco para que no sea recortada por overflow:hidden -->
+    <div class="carta" id="carta">
+      <span class="badge-paginas" id="badgePaginas"></span>
+      <img id="fotoCarta" alt="Carta" src="">
+    </div>
+    <p class="instruccion" id="instruccion">Toca el sobre para intentar abrirlo</p>
+    <div class="acciones-carta">
+      <button id="btnVerGrande" type="button">Ver carta en grande</button>
+      <button class="secundario" id="btnCerrarCarta" type="button">Cerrar sobre</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= VISOR GRANDE: leer la carta en pantalla completa ================= -->
+<div class="overlay-lectura" id="overlayLectura">
+  <button class="btn-cerrar-lectura" id="btnCerrarLectura" aria-label="Cerrar visor" type="button">✕</button>
+  <button class="btn-nav btn-nav-anterior" id="btnPaginaAnterior" aria-label="Página anterior" type="button">‹</button>
+  <div class="lectura-marco">
+    <img id="fotoGrande" alt="Carta ampliada">
+  </div>
+  <button class="btn-nav btn-nav-siguiente" id="btnPaginaSiguiente" aria-label="Página siguiente" type="button">›</button>
+  <p class="pista-lectura" id="pistaLectura">Toca la imagen o la ✕ para cerrar</p>
+</div>
+
+<!-- ================= MODAL: pedir contraseña para abrir ================= -->
+<div class="overlay" id="overlayAbrir">
+  <div class="panel" id="panelAbrir">
+    <h2>Ingresa la contraseña</h2>
+    <p class="ayuda">Esta carta está protegida. Escribe la contraseña para abrir el sobre.</p>
+    <div class="campo">
+      <label for="inputPasswordAbrir">Contraseña</label>
+      <input type="password" id="inputPasswordAbrir" autocomplete="off">
+      <p class="mensaje-error" id="errorAbrir"></p>
+    </div>
+    <div class="fila-botones">
+      <button class="secundario" type="button" id="btnCancelarAbrir">Cancelar</button>
+      <button type="button" id="btnConfirmarAbrir">Abrir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: configuración (crear / editar sobre) ================= -->
+<div class="overlay" id="overlayConfig">
+  <div class="panel" id="panelConfig">
+    <h2 id="tituloConfig">Crea tu sobre</h2>
+    <p class="ayuda" id="ayudaConfig">Sube la foto de la carta y define una contraseña para protegerla.</p>
+
+    <!-- Paso de verificación si ya existe un sobre configurado -->
+    <div id="pasoVerificar">
+      <div class="campo">
+        <label for="inputPasswordActual">Contraseña actual</label>
+        <input type="password" id="inputPasswordActual" autocomplete="off">
+        <p class="mensaje-error" id="errorVerificar"></p>
+      </div>
+      <div class="fila-botones">
+        <button class="secundario" type="button" id="btnCancelarVerificar">Cancelar</button>
+        <button type="button" id="btnConfirmarVerificar">Continuar</button>
+      </div>
+      <hr class="separador">
+      <button class="link-reinicio" id="btnReiniciarTodo" type="button">Borrar sobre y empezar de nuevo</button>
+    </div>
+
+    <!-- Formulario de edición / creación -->
+    <form id="formConfig" style="display:none;">
+      <div class="campo">
+        <label>Páginas de la carta (puedes subir varias fotos, en orden)</label>
+        <label class="subir-foto" id="zonaSubirFoto">
+          <span class="texto-subir">Toca para elegir una o más imágenes</span>
+          <input type="file" id="inputFoto" accept="image/*" multiple>
+        </label>
+        <div class="miniaturas" id="miniaturas"></div>
+      </div>
+      <div class="campo">
+        <label for="inputTitulo">Título de la página (opcional)</label>
+        <input type="text" id="inputTitulo" placeholder="Un sobre para ti">
+      </div>
+      <div class="campo">
+        <label for="inputPasswordNueva">Nueva contraseña</label>
+        <input type="password" id="inputPasswordNueva" autocomplete="off">
+      </div>
+      <div class="campo">
+        <label for="inputPasswordConfirmar">Confirmar contraseña</label>
+        <input type="password" id="inputPasswordConfirmar" autocomplete="off">
+        <p class="mensaje-error" id="errorConfig"></p>
+      </div>
+      <div class="fila-botones">
+        <button class="secundario" type="button" id="btnCancelarConfig">Cancelar</button>
+        <button type="submit">Guardar sobre</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
